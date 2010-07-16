@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Counting Terms</title>
+
+<script TYPE="text/javascript">
+
+function ex1Func(form)
+{
+	form.sorts.value = "A\nB\nC" 
+	form.ordering.value = "A B\nA C";
+	form.functions.value = "c A";
+	form.formula.value = "forsome x : A | forsome y : B | x in P and y in Q";
+	form.example1.disabled = true;
+	form.example2.disabled = false;
+	form.example3.disabled = false;
+}
+
+function ex2Func(form)
+{
+	form.sorts.value = "A\nB\nC" 
+	form.ordering.value = "B A\nC A";
+	form.functions.value = "c A\nf B C";
+	form.formula.value = "forsome x : B | (x in P or fc in Q) and fx in Q ";
+	form.example1.disabled = false;
+	form.example2.disabled = true;
+	form.example3.disabled = false;
+}
+
+function ex3Func(form)
+{
+	form.sorts.value = "A" 
+	form.ordering.value = "";
+	form.functions.value = "";
+	form.formula.value = "not forall x : A | x in P";
+	form.example1.disabled = false;
+	form.example2.disabled = false;
+	form.example3.disabled = true;
+}
+
+function enableAllExamples(form)
+{
+	form.example1.disabled = false;
+	form.example2.disabled = false;
+	form.example3.disabled = false;
+}
+
+</script>
+</head>
+
+<body>
+
+Welcome! <BR>
+
+Given an order-sorted signature S and a closed formula F, this application will
+produce a bound, based on F's Skolem signature, for each sort. Every sort's bound, 
+<I>if finite</I>, is sufficient (with respect to that sort) for checking F's 
+satisfiability via model finding.  
+   
+In fact, all sentences with the same Skolem signature will produce the same bounds. 
+For more detail on the setting, the theory, and algorithms involved, see our 
+<A HREF="http://www.cs.wpi.edu/~tn/publications/finite-model-osl-TR.pdf">technical report</A>.
+
+<HR>
+<FORM NAME="TestForm" ACTION="termcount" METHOD="GET">
+
+<B>Enter sort names here:</B> <BR>
+Sort names are capitalized strings of letters such as "UNIVERSE" or "S".
+Enter one sort name per line. <BR>
+<textarea rows="4" cols="20" name="sorts">
+A
+B
+C
+</textarea>
+<P>
+
+<B>Enter an ordering on the above sorts here:</B> <BR>
+Enter one sort containment per line.
+For instance, "A B" means "A &lt; B", i.e. sort A is a subsort of B. <BR>
+<textarea rows="8" cols="20" name="ordering" onKeyPress="enableAllExamples(TestForm)">
+A B
+A C
+</textarea>
+<P>
+
+<B>Enter Constants and Functions (pre-Skolemization) here:</B> <BR>
+Enter one constant or function per line as name followed by signature. <BR>
+For instance, "f A B C" means that f is a function from (A x B) to C,
+where A, B, and C are sorts. <BR>
+Constant and function names must be strings of lower case letters.<BR>
+<textarea rows="4" cols="20" name="functions" onKeyPress="enableAllExamples(TestForm)">
+c A
+</textarea>
+<P>
+
+
+<B>Enter the formula here:</B> <BR>
+This demo's <A HREF="syntax.html">formula syntax</A> is a restricted subset of <A HREF="http://alloy.mit.edu/community/">Alloy</A>'s.<BR>
+<textarea rows="3" cols="60" name="formula" onKeyPress="enableAllExamples(TestForm)">
+forsome x : A | forsome y : B | x in P and y in Q
+</textarea>
+
+
+<P>
+<INPUT TYPE="SUBMIT" NAME="submit" VALUE="Submit" >  
+
+<HR>
+<INPUT TYPE="BUTTON" NAME="example1" VALUE="Example 1" onClick="ex1Func(TestForm)" DISABLED>
+<INPUT TYPE="BUTTON" NAME="example2" VALUE="Example 2" onClick="ex2Func(TestForm)">
+<INPUT TYPE="BUTTON" NAME="example3" VALUE="Example 3" onClick="ex3Func(TestForm)"> 
+<BR>
+</FORM>
+
+<HR>
+
+</body>
+</html> 

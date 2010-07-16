@@ -1,0 +1,165 @@
+package edu.wpi.termcount;
+
+import java_cup.runtime.*;
+import kodkod.ast.*;
+import java.util.*;
+
+parser code {:
+public void report_fatal_error(String message, Object info)
+throws Exception
+{
+	System.err.println(message);
+	if(info instanceof Symbol)
+	{
+		Symbol tok = (Symbol)info;
+
+		// Don't try to recover. Just report the error to the user.
+		// Docs say line# = cur_token.left 
+		//          col# = cur_token.right
+
+		throw new FormulaParserException(tok.left,
+				tok.right, tok.value);
+	}
+
+	
+	super.report_fatal_error(message, info);
+}
+
+List<Variable> makeSingleVector(Variable v)
+{
+	List<Variable> result = new ArrayList<Variable>();
+	result.add(v);
+	return result;
+}
+
+List<Variable> addToVector(List<Variable> vv, Variable v2)
+{
+	List<Variable> result = new ArrayList<Variable>(vv);
+	result.add(v2);
+	return result;
+}
+
+Set<Relation> relations = new HashSet<Relation>();
+
+Formula makeAtom(List<Variable> vec, String pname)
+{
+	try
+	{
+		Expression thevec = MFormulaManager.makeVarTupleV(vec);
+		Relation pred = MFormulaManager.makeRelation(pname, vec.size());
+		relations.add(pred);
+		return MFormulaManager.makeAtom(thevec, pred);
+	}
+	catch(MGEManagerException e)
+	{
+		// impossible
+		return null;
+	}	
+}
+
+Formula makeForAll(Formula f, String s, Variable v)
+{
+	try
+	{
+		Expression sort = MFormulaManager.makeRelation(s, 1);
+		Decls d = MFormulaManager.makeOneOfDecl(v, sort);	
+		return MFormulaManager.makeForAll(f, d);
+	}
+	catch(MGEManagerException e)
+	{
+		// impossible
+		return null;
+	}	
+	
+}
+
+Formula makeExists(Formula f, String s, Variable v)
+{
+	try
+	{
+		Expression sort = MFormulaManager.makeRelation(s, 1);
+		Decls d = MFormulaManager.makeOneOfDecl(v, sort);	
+		return MFormulaManager.makeExists(f, d);
+	}
+	catch(MGEManagerException e)
+	{
+		// impossible
+		return null;
+	}	
+	
+}
+
+:}
+
+/* Preliminaries to set up and use the scanner.  */
+init with {: /* No longer an init method? */             :};
+scan with {: return getScanner().next_token(); :};
+
+/* Terminals (tokens returned by the scanner). */
+terminal			AND, OR, NOT, BAR, COLON, LPAREN, RPAREN, FORSOME, FORALL, EQUALS, ARROW, IN;
+terminal	    Variable 	VAR;
+terminal        String	SORTORPRED;
+
+/* Non-terminals */
+non terminal    Formula 	FORMULA;
+non terminal	List<Variable>	VARVECTOR;
+
+precedence left OR;
+precedence left AND;
+precedence nonassoc NOT;
+
+/* The grammar */
+
+FORMULA      ::= 
+          VAR:v1 EQUALS VAR:v2
+	      {: RESULT = MFormulaManager.makeEqAtom(v1, v2); :} 
+	          
+	      | 
+	      
+          VARVECTOR:vec IN SORTORPRED:pname
+          {: RESULT = parser.makeAtom(vec, pname); :} 
+	      
+	      | 
+	      
+          LPAREN FORMULA:f RPAREN     
+	      {: RESULT = f; :} 
+	      
+	      |
+	      
+	      FORMULA:f AND FORMULA:g
+	      {: RESULT = MFormulaManager.makeAnd(f, g); :}
+	      
+	      |
+	      
+	      FORMULA:f OR FORMULA:g
+	      {: RESULT = MFormulaManager.makeOr(f, g); :}
+
+	      |
+	      
+	      NOT FORMULA:f 
+	      {: RESULT = MFormulaManager.makeNegation(f); :}
+
+	      |
+	      
+	      FORALL VAR:v COLON SORTORPRED:s BAR FORMULA:f 
+	      {: RESULT = parser.makeForAll(f, s, v); :}
+
+	      |
+	      
+	      FORSOME VAR:v COLON SORTORPRED:s BAR FORMULA:f 
+	      {: RESULT = parser.makeExists(f, s, v); :}
+	      
+	      ;
+
+
+
+
+VARVECTOR     ::=  VAR:v
+	          {: RESULT = parser.makeSingleVector(v); :}
+	          
+	          |
+	          
+	          VARVECTOR:vv ARROW VAR:v2
+	          {: RESULT = parser.addToVector(vv, v2); :}
+
+		;

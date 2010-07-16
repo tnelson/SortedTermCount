@@ -15,6 +15,15 @@ The current web application does not support overloading of functions.
 
 
 
+********************************
+Empty test:
+
+A
+
+
+forall x : A | x in P
+
+Expect: All finitary but empty
 
 ********************************
 Basic test:

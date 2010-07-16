@@ -97,18 +97,28 @@ public class TermcountServlet extends HttpServlet
 		{
 			// Focus on the correct line!
 			// May be separated by either CRs or LFs (or both at once! don't double-count)
-			String[] formulaLines = theFormula.split("\n\r|\r\n|\r|\n");					
+			String[] formulaLines = theFormula.split("\n\r|\r\n|\r|\n");
+			String theLine = "";
 			
-			output = "Error parsing formula at row "+e.row+", column "+e.col+
-			         ". The token was: "+e.errorValue+"<BR><BR>\n";
-			output += "Line "+e.row+" was:<BR>\n";
-			output += "<CODE>"+ formulaLines[e.row] + "<BR>\n";
-			
-			String indicatorString = "";
-			for(int ii = 0;ii<e.col;ii++)
+			// If the row is invalid
+			if(formulaLines.length < 1)
+				theLine = "";
+			else if(e.row < 0)
+				theLine = formulaLines[0]; 
+			else			
+				theLine = formulaLines[e.row];
+				           			
+        		output = "Error parsing formula at row "+e.row+", column "+e.col+
+				     	 ". The token was: "+e.errorValue+"<BR><BR>\n";
+				output += "Line "+e.row+" was:<BR>\n";
+				output += "<CODE>"+ theLine + "<BR>\n";
+				           			
+				String indicatorString = "";
+				for(int ii = 0;ii<e.col;ii++)
 				indicatorString += "&nbsp;";
-			indicatorString += "<U><B>^</B></U></CODE>";
-			output += indicatorString;
+				indicatorString += "<U><B>^</B></U></CODE>";
+				output += indicatorString;				
+			
 		}
 		catch(NotASortException e)
 		{

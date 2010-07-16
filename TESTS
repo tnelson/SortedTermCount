@@ -1,0 +1,99 @@
+A few tests below. There are also internal test cases in Java.
+
+
+
+No sorts, but A C:
+Error: Sort A was undeclared, but used in ordering: A C.
+
+********************************
+
+Check for double constant, double function:
+Function/Constant name: c appeared more than once.
+The current web application does not support overloading of functions.
+
+********************************
+
+
+
+
+********************************
+Basic test:
+
+A
+B
+C
+
+A B
+A C
+
+c A
+
+forsome x : A | x in P
+
+Expect: 2 in A, B, C
+
+********************************
+More advanced counting:
+
+A
+B
+C
+D
+
+<no subs>
+
+f A A B
+g B B C
+h C C D
+c A
+
+forsome x : A | x in P
+
+univ: 278 C: 16 D: 256 A: 2 B: 4 
+
+
+********************************
+Same, but with subs to check propagation:
+
+A
+B
+C
+D
+
+A C
+
+f A A B
+g B B C
+h C C D
+c A
+
+forsome x : A | x in P
+
+C is 2 more than before, due to propagation.
+18^2 = 324.
+
+univ: 346 C: 18 D: 324 A: 2 B: 4 
+********************************
+No integer overflow:
+
+A
+B
+C
+D
+E
+
+<no subs>
+
+f A A A B
+g B B B C
+h C C C D
+i D D D E
+c A
+
+forsome x : A | x in P
+
+
+2 ----> 2^3 = 8 ----> 2^3^3 = 2^9 = 512 ----> 512^3 = 134217728 ----> 134217728^3 = 2417851639229258349412352
+added together, we get the univ result:
+
+univ: 2417851639229258483630602 C: 512 D: 134217728 E: 2417851639229258349412352 A: 2 B: 8 

@@ -4,25 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Sorted Term Count Demo Syntax</title>
 </head>
-<body> 
-Syntax for formulas is: <BR><BR> 
+<body>
+Syntax for formulas is: <BR><BR>
 <TABLE>
 <TR><TH><CODE>Formula Syntax</CODE></TH><TH>Meaning</TH></TR>
-<TR><TD><CODE>forsome x : A | FMLA </CODE></TD><TD>Existential quantification over x in sort A. </TD></TR>
-<TR><TD><CODE>forall x : A | FMLA </CODE> </TD><TD>Universal quantification over x in sort A. </TD></TR>
+<TR><TD><CODE>some x : A | FMLA </CODE></TD><TD>Existential quantification over x in sort A. </TD></TR>
+<TR><TD><CODE>all x : A | FMLA </CODE> </TD><TD>Universal quantification over x in sort A. </TD></TR>
 <TR><TD><CODE>not FMLA</CODE></TD><TD> Negation of a formula <CODE>FMLA</CODE>.</TD></TR>
-<TR><TD><CODE>FMLA1 and FMLA2</CODE></TD><TD> Conjunction of formulas <CODE>FMLA1</CODE> and <CODE>FMLA2</CODE>. </TD></TR> 
+<TR><TD><CODE>FMLA1 and FMLA2</CODE></TD><TD> Conjunction of formulas <CODE>FMLA1</CODE> and <CODE>FMLA2</CODE>. </TD></TR>
 <TR><TD><CODE>FMLA1 or FMLA2</CODE></TD><TD> Disjunction of formulas <CODE>FMLA1</CODE> and <CODE>FMLA2</CODE>.</TD></TR>
 <TR><TD><CODE>x in R</CODE></TD><TD> The atomic formula <CODE>R(x)</CODE>. </TD></TR>
 <TR><TD><CODE>x->y in R</CODE></TD><TD> The atomic formula <CODE>R(x, y)</CODE>. </TD></TR>
 <TR><TD><CODE>x->...->z in R</CODE></TD><TD> The atomic formula <CODE>R(x, ..., z)</CODE>. </TD></TR>
-<TR><TD><CODE>x = y</CODE></TD><TD> Equality of the variables x and y.</TD></TR> 
+<TR><TD><CODE>x = y</CODE></TD><TD> Equality of the variables x and y.</TD></TR>
 <TR><TD><CODE>(FMLA)</CODE> </TD><TD>Grouping of formulas.</TD></TR>
 </TABLE>
 
 <P>
 
-Variables must be lower case alpha character strings. 
+Variables must be lower case alpha character strings.
 
 <P>
 
@@ -32,9 +32,9 @@ Relations and Sort symbols must be upper case alpha character strings.<BR>
 
 Finally, Alloy syntax does not allow functions, and our algorithm is
 concerned only with the Skolem signature of a given formula, not with
-the structure of terms contained therein. Therefore no distinction is 
+the structure of terms contained therein. Therefore no distinction is
 made between variables and more complex terms at the formula level. If
-you wish to use function symbols in a formula, they may be used 
+you wish to use function symbols in a formula, they may be used
 <B>without parentheses</B>, e.g. <I>fxy</I> instead of <I>f(x, y)</I>.<BR>
 
 

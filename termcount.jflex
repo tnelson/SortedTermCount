@@ -69,6 +69,9 @@ in		          { return newSym(sym.IN); }
 
 forsome           { return newSym(sym.FORSOME); }
 forall            { return newSym(sym.FORALL); }
+some           { return newSym(sym.FORSOME); }
+all            { return newSym(sym.FORALL); }
+
 
 {varname}	      { return newSym(sym.VAR, MFormulaManager.makeVariable(yytext())); }
 

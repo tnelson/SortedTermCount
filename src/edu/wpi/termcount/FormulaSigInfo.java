@@ -683,6 +683,28 @@ public class FormulaSigInfo
 		
 	}
 	
+	private void confirmNoFunctionOrConstantOverloading()
+	throws UnsupportedFormulaException
+	{
+		// Do not allow overloading! 
+		Set<String> usedNames = new HashSet<String>();
+		
+		for(SigFunction f : originalFunctions)
+		{
+			if(usedNames.contains(f.name))
+				throw new UnsupportedFormulaException("Error: The symbol "+f.name+" was declared more than once!");
+			usedNames.add(f.name);
+		}
+		
+		for(SigFunction f : originalConstants)
+		{
+			if(usedNames.contains(f.name))
+				throw new UnsupportedFormulaException("Error: The symbol "+f.name+" was declared more than once!");
+			usedNames.add(f.name);
+		}
+		
+	}
+	
 	private void init(Set<LeafExpression> sorts, 
 			Map<LeafExpression, Set<LeafExpression>> supersorts,
 			Map<LeafExpression, List<LeafExpression>> predicates, 
@@ -705,6 +727,8 @@ public class FormulaSigInfo
 		// pre-Skolem functions
 		this.originalConstants = originalConstants;
 		this.originalFunctions = originalFunctions;
+		
+		confirmNoFunctionOrConstantOverloading();
 		
 		// Add Expression.UNIV as the ultimate supersort.
 		handleUNIV();
